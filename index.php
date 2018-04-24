@@ -44,7 +44,12 @@
                                 <div class="card-footer">
                                     <div class="row no-margin justify-content-between">
                                         <div class="col-6">
-                                            <button id="restart-connect-4" type="button" class="btn btn-primary btn-lg"><i class="fa fa-redo fa-flip-horizontal"></i>&nbsp;&nbsp;Restart</button>
+                                            <a href="https://github.com/bbastou/4-in-a-row" class="btn btn-dark btn-lg mr-3" >
+                                            <i class="fab fa-github mr-2"></i>Github
+                                            </a>
+                                            <button id="restart-connect-4" type="button" class="btn btn-success btn-lg">
+                                                <i class="fa fa-redo fa-flip-horizontal mr-2"></i>Restart
+                                            </button>
                                         </div>
                                         <div class="game-result col-6"></div>
                                     </div>
