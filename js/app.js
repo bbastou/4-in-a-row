@@ -1,9 +1,24 @@
 (function() {
 
+        
+    var createBoard = function(ligne, column) {
+        let html = '';
+         for(let i = ligne ; i >= 0 ; i--) {
+            html += '<div class="row justify-content-between">';
+            for( let j = 0; j < column ; j++) {
+                html += '<div id="box'+j+'_'+i+'" class="col-xs box empty colonne'+j+'" data-column="'+j+'" >&nbsp;</div>';
+             }
+             html += '</div>';
+         }
+        return html;
+    }
+
 	var winningShots = 4;
 	var nbColumn = 7;
 	var maxDepth = 6;
-	var board = new Array(nbColumn);
+    var board = new Array(nbColumn);
+    
+    $('#connect-4').html(createBoard(maxDepth-1, nbColumn));
 
 	for(let i=0; i < board.length; i++)
 		board[i] = new Array();
@@ -93,7 +108,6 @@
 	}
 
 
-
 	var setCoup = function(color) {
 		// Trouver coup gagnant
 
@@ -161,6 +175,7 @@
 				return 1;
 		}
 		return 0;
-	}
+    }
+
 
 })();
