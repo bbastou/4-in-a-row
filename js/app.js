@@ -1,6 +1,11 @@
 (function() {
 
-        
+	var winningShots = 4;
+	var nbColumn = 7;
+	var maxDepth = 6;
+    var board = new Array(nbColumn);
+  
+    
     var createBoard = function(ligne, column) {
         let html = '';
          for(let i = ligne ; i >= 0 ; i--) {
@@ -13,11 +18,6 @@
         return html;
     }
 
-	var winningShots = 4;
-	var nbColumn = 7;
-	var maxDepth = 6;
-    var board = new Array(nbColumn);
-    
     $('#connect-4').html(createBoard(maxDepth-1, nbColumn));
 
 	for(let i=0; i < board.length; i++)
@@ -36,6 +36,7 @@
 	
 	$('.box.empty').addClass(color1+'-player');
 
+    // Clique sur une case
 	$('.box.empty').click(function() {
 		if(gameStarted) {
 
@@ -59,22 +60,18 @@
 				
 				if(isWin(column)) {
 					$('#connect-4-card .game-result').html('<h3 class="text-capitalize">'+colorPlayer+' wins!</h3>');
-					$('.box.empty').removeClass(color1+'-player '+color2+'-player');
-					gameStarted = false;
-					if (typeof setColor === 'function') {
-						colorPlayer == color1 ? setColor(2, rgb_1) : setColor(2, rgb_2) ;
-					}
+					setEnd();
 				}
 
 				if(isEnd()) {
 					$('#connect-4-card .game-result').html('<h3>It\'s a draw...</h3>');
-					$('.box.empty').removeClass(colorPlayer+'-player '+color2+'-player');					
-					gameStarted = false;
+					setEnd();
 				}
 			}
 		}
 	});
 
+    // Bouton de remise à zéro
 	$('#restart-connect-4').click(function() {
 		$('.box').removeClass(color1+' '+color2+' '+color1+'-through '+color2+'-through').addClass('empty');
 		gameStarted = true;
@@ -84,6 +81,7 @@
 		$('.box.empty').removeClass(color2+'-player').addClass(color1+'-player');
 		$('#connect-4-card .game-result').html('');
 	});
+        
 
 	var setPawn = function(column, color) {
 		$('.box.empty').removeClass(color1+'-through '+color2+'-through');
@@ -91,15 +89,15 @@
 			$('#box'+column+'_'+j).addClass(color+'-through');
 		}
 		board[column].push(color);
-		return 1;
+		return true;
 	}
 
 	var isEnd = function() {
 		for(let i=0; i < board.length; i++) {
 			if(board[i].length < maxDepth)
-				return 0;
+				return false;
 		}
-		return 1;
+		return true;
 	}
 
 	var isWin = function(column) {
@@ -107,7 +105,12 @@
 		return checkColumn(column) || checkLine(pawn) || checkDiago(column, pawn, 1) || checkDiago(column, pawn, 2);
 	}
 
+    var setEnd = function() {
+        $('.box.empty').removeClass(color1+'-player '+color2+'-player');					
+        gameStarted = false;
+	}
 
+    // A implementer IA pour jouer contre l'ordi
 	var setCoup = function(color) {
 		// Trouver coup gagnant
 
@@ -137,7 +140,7 @@
 			}
 			
 			if(win === winningShots)
-				return 1;
+				return true;
 			
 			if(verification === 2) {
 				if(i > line-winningShots )
@@ -148,7 +151,7 @@
 					i++;
 			}
 		}
-		return 0;
+		return false;
 	}
 
 	var checkLine = function(line) {
@@ -159,10 +162,11 @@
 			else
 				win = 0;
 			if(win === winningShots)
-				return 1;
+				return true;
 		}
-		return 0;
-	}
+		return false;
+    }
+    
 	var checkColumn = function(column) {
 		let win = 0;
 		for(let i=0; i < board[column].length; i++) {
@@ -172,9 +176,9 @@
 				win = 0;
 
 			if(win === winningShots)
-				return 1;
+				return true;
 		}
-		return 0;
+		return false;
     }
 
 
